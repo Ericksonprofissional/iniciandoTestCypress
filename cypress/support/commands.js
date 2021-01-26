@@ -29,5 +29,17 @@ Cypress.Commands.add('clickAlert', (locator, message) => {
     cy.on('window:alert', msg =>{
         console.log(msg);
         expect(msg).to.be.equal(message)
-    })
+    });
+});
+
+Cypress.Commands.add('barrigaLogin', ()=>{
+    cy.get('.input-group > .form-control').type('ericksonprofissional@gmail.com');
+    cy.get(':nth-child(2) > .form-control').type('teste@1010');
+    cy.get('.btn').click();
+    cy.alert('.toast-message', 'Bem vindo, ');
+});
+
+Cypress.Commands.add('alert', (locator, message) =>{
+    cy.get(locator).should('contain',message);
+
 })

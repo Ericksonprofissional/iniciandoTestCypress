@@ -3,15 +3,14 @@
 describe('Dinamic test', () => {
     before(() => {
         cy.visit('http://barrigareact.wcaquino.me/');
+        cy.barrigaLogin();
     });
 
-    it('Login', ()=>{
-        cy.get('.input-group > .form-control').type('ericksonprofissional@gmail.com');
-        cy.get(':nth-child(2) > .form-control').type('teste@1010');
+    it('Should create an account',() => {
+        cy.get('[data-test=menu-settings]').click();
+        cy.get('[href="/contas"]').click();
+        cy.get('[data-test=nome]').type('Aline1');
         cy.get('.btn').click();
+        cy.alert('.toast-message', 'Conta inserida com sucesso');
     });
-
-    it('Message success',()=>{
-        cy.get('.toast-message').should('contain','Bem vindo, ');
-    })
 });
