@@ -10,7 +10,7 @@ describe('Work with PopUp', () => {
 
     it('Goin back to the past', ()=>{
         cy.get('#buttonNow').click();
-        cy.get('#resultado > span').should('contain', '07/11/2019');
+        cy.get('#resultado > span').should('contain', '25/01/2021');
 
         cy.clock();
         cy.get('#buttonNow').click();
@@ -24,10 +24,9 @@ describe('Work with PopUp', () => {
 
     it('Goes to the future', ()=>{
         cy.get('#buttonTimePassed').click();
-        cy.get('#resultado > span').should('contain', '15731');
+        cy.get('#resultado > span').should('contain', '161162');
         cy.get('#resultado > span').invoke('text')
-            .should('gt', 157317985356);
-
+            .should('gt', 161162);
         cy.clock();
         cy.get('#buttonTimePassed').click();
         cy.get('#resultado > span').invoke('text')
@@ -36,7 +35,14 @@ describe('Work with PopUp', () => {
         cy.get('#buttonTimePassed').click();
         cy.get('#resultado > span').invoke('text')
             .should('lte', 1000);
-            cy.tick(5000)
+        cy.tick(5000);
+        cy.get('#buttonTimePassed').click();
+        cy.get('#resultado > span').invoke('text')
+            .should('gte', 5000);
+        cy.tick(10000);
+        cy.get('#buttonTimePassed').click();
+        cy.get('#resultado > span').invoke('text')
+            .should('gte', 15000);
 
-    })
-})
+    });
+});
