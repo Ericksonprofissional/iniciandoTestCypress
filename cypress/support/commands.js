@@ -24,6 +24,8 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+import loc from '../support/locator';
+
 Cypress.Commands.add('clickAlert', (locator, message) => {
     cy.get(locator).click();
     cy.on('window:alert', msg =>{
@@ -33,10 +35,10 @@ Cypress.Commands.add('clickAlert', (locator, message) => {
 });
 
 Cypress.Commands.add('barrigaLogin', ()=>{
-    cy.get('.input-group > .form-control').type('ericksonprofissional@gmail.com');
-    cy.get(':nth-child(2) > .form-control').type('teste@1010');
-    cy.get('.btn').click();
-    cy.alert('.toast-message', 'Bem vindo, ');
+    cy.get(loc.LOGIN.USER).type('ericksonprofissional@gmail.com');
+    cy.get(loc.LOGIN.SENHA).type('teste@1010');
+    cy.get(loc.LOGIN.BTN_LOGIN).click();
+    cy.alert(loc.MESSAGE, 'Bem vindo, ');
 });
 
 Cypress.Commands.add('alert', (locator, message) =>{

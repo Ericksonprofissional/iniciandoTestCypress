@@ -1,25 +1,39 @@
 /// <reference types="cypress" />
 
+import loc from '../../support/locator';
+
 describe('Dinamic test', () => {
     before(() => {
         cy.visit('http://barrigareact.wcaquino.me/');
         cy.barrigaLogin();
     });
-    const uid = Cypress._.random(0, 1e6);
-    console.log(uid)
 
     it('Should create an account',() => {
-        cy.get('[data-test=menu-settings]').click();
-        cy.get('[href="/contas"]').click();
-        cy.get('[data-test=nome]', {timeout:5000}).type(`Aline${uid}`);
-        cy.get('.btn').click();
-        cy.alert('.toast-message', 'Conta inserida com sucesso');
+        cy.get(loc.MENU.SETINGS).click();
+        cy.get(loc.MENU.CONTAS).click();
+        cy.get(loc.CONTAS.NOME).type(`Aline${loc.RANDOM}`);
+        cy.get(loc.CONTAS.BTN_SALVAR).click();
+        cy.alert(loc.MESSAGE, 'Conta inserida com sucesso');
     });
 
     it('Should alter an account', () => {
-        cy.xpath(`//table//td[contains(., 'Aline${uid}')]/..//i[@class='far fa-edit']`).click();
-        cy.get('[data-test=nome]', {timeout:5000}).type(` Martinez`);
-        cy.get('.btn').click();
-        cy.alert('.toast-message', 'Conta atualizada com sucesso');
+        cy.xpath(loc.CONTAS.XP).click();
+        cy.get(loc.CONTAS.NOME).type(` Martinez`);
+        cy.get(loc.CONTAS.BTN_SALVAR).click();
+        cy.alert(loc.MESSAGE, 'Conta atualizada com sucesso');
+    });
+
+    it('Reset accounts', () => {
+        cy.wait(5000);
+        cy.get(loc.MENU.SETINGS).click();
+        cy.get(loc.MENU.RESET).click();
+        cy.alert(loc.MESSAGE, 'Dados resetados com sucesso');
+    });
+
+    it('Logout sistem', () =>{
+        cy.wait(5000);
+        cy.get(loc.MENU.SETINGS).click();
+        cy.get(loc.MENU.LOGOUT).click();
+        cy.alert(loc.MESSAGE, 'Até Logo!');
     });
 });
