@@ -2,10 +2,11 @@
 
 import loc from '../../support/locator';
 
-describe('Dinamic test', () => {
+describe('Test Sistema de cobrança de aluguel', () => {
     before(() => {
         cy.visit('http://barrigareact.wcaquino.me/');
-        cy.barrigaLogin();
+        cy.barrigaLogin('ericksonprofissional@gmail.com', 'teste@1010');
+        cy.contasReset();
     });
 
     it('Should create an account',() => {
@@ -21,13 +22,6 @@ describe('Dinamic test', () => {
         cy.get(loc.CONTAS.NOME).type(` Martinez`);
         cy.get(loc.CONTAS.BTN_SALVAR).click();
         cy.alert(loc.MESSAGE, 'Conta atualizada com sucesso');
-    });
-
-    it('Reset accounts', () => {
-        cy.wait(5000);
-        cy.get(loc.MENU.SETINGS).click();
-        cy.get(loc.MENU.RESET).click();
-        cy.alert(loc.MESSAGE, 'Dados resetados com sucesso');
     });
 
     it('Logout sistem', () =>{

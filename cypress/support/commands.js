@@ -24,7 +24,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-import loc from '../support/locator';
+import loc from './locator';
 
 Cypress.Commands.add('clickAlert', (locator, message) => {
     cy.get(locator).click();
@@ -34,14 +34,19 @@ Cypress.Commands.add('clickAlert', (locator, message) => {
     });
 });
 
-Cypress.Commands.add('barrigaLogin', ()=>{
-    cy.get(loc.LOGIN.USER).type('ericksonprofissional@gmail.com');
-    cy.get(loc.LOGIN.SENHA).type('teste@1010');
+Cypress.Commands.add('barrigaLogin', (login, senha)=>{
+    cy.get(loc.LOGIN.USER).type(login);
+    cy.get(loc.LOGIN.SENHA).type(senha);
     cy.get(loc.LOGIN.BTN_LOGIN).click();
     cy.alert(loc.MESSAGE, 'Bem vindo, ');
 });
 
 Cypress.Commands.add('alert', (locator, message) =>{
     cy.get(locator).should('contain',message);
+})
 
+Cypress.Commands.add('contasReset', () =>{
+    cy.get(loc.MENU.SETINGS).click();
+    cy.get(loc.MENU.RESET).click();
+    cy.alert(loc.MESSAGE, 'Dados resetados com sucesso')
 })

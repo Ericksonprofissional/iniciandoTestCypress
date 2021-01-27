@@ -1,4 +1,4 @@
-const uid = Cypress._.random('A', 1e2);
+const uid = Cypress._.random(1, 1e3);
 
 const locators = {
 
@@ -20,7 +20,6 @@ const locators = {
         BTN_SALVAR: '.btn',
         XP: `//table//td[contains(., 'Aline${uid}')]/..//i[@class='far fa-edit']`
     },
-
 }
 
 export default locators;
