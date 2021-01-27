@@ -50,3 +50,10 @@ Cypress.Commands.add('contasReset', () =>{
     cy.get(loc.MENU.RESET).click();
     cy.alert(loc.MESSAGE, 'Dados resetados com sucesso')
 })
+
+Cypress.Commands.add('logoutSytem', () =>{
+    cy.wait(5000);
+    cy.get(loc.MENU.SETINGS).click();
+    cy.get(loc.MENU.LOGOUT).click();
+    cy.alert(loc.MESSAGE, 'Até Logo!');
+});

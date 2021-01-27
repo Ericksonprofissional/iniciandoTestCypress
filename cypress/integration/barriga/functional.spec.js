@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 import loc from '../../support/locator';
+import '../../support/CommandsConta';
 
 describe('Test Sistema de cobrança de aluguel', () => {
     before(() => {
@@ -10,24 +11,17 @@ describe('Test Sistema de cobrança de aluguel', () => {
     });
 
     it('Should create an account',() => {
-        cy.get(loc.MENU.SETINGS).click();
-        cy.get(loc.MENU.CONTAS).click();
-        cy.get(loc.CONTAS.NOME).type(`Aline${loc.RANDOM}`);
-        cy.get(loc.CONTAS.BTN_SALVAR).click();
+        cy.AcessarMenuContas();
+        cy.inserirContas('Erickson')
         cy.alert(loc.MESSAGE, 'Conta inserida com sucesso');
     });
 
     it('Should alter an account', () => {
         cy.xpath(loc.CONTAS.XP).click();
-        cy.get(loc.CONTAS.NOME).type(` Martinez`);
+        cy.inserirContas('Martinez')
         cy.get(loc.CONTAS.BTN_SALVAR).click();
         cy.alert(loc.MESSAGE, 'Conta atualizada com sucesso');
+        cy.logoutSytem();
     });
 
-    it('Logout sistem', () =>{
-        cy.wait(5000);
-        cy.get(loc.MENU.SETINGS).click();
-        cy.get(loc.MENU.LOGOUT).click();
-        cy.alert(loc.MESSAGE, 'Até Logo!');
-    });
 });

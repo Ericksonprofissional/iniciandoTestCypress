@@ -18,7 +18,7 @@ const locators = {
     CONTAS: {
         NOME: '[data-test=nome]',
         BTN_SALVAR: '.btn',
-        XP: `//table//td[contains(., 'Aline${uid}')]/..//i[@class='far fa-edit']`
+        XP: `//table//td[contains(., 'Erickson ')]/..//i[@class='far fa-edit']`
     },
 }
 
