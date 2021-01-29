@@ -10,6 +10,7 @@ const locators = {
         REGISTROS: '',
         FN_XP_BUSCA_ELEMENTO: (desc, value) => `//span[contains(., '${desc}')]/following-sibling::small[contains(., '${value}')]`,    
         FN_XP_EXCLUIR_ELEMENTO: conta => `//span[contains(., '${conta}')]/../../..//i[@class="far fa-trash-alt"]`,    
+        FN_XP_ALTERAR_ELEMENTO: conta => `//span[contains(., '${conta}')]/../../..//i[@class="fas fa-edit"]`,    
     },
     LOGIN:{
         USER: '[data-test=email]',
@@ -20,6 +21,7 @@ const locators = {
     MENU: {
         HOME: '[data-test=menu-home]',
         SETINGS: '[data-test=menu-settings]',
+        EXTRATO: '[data-test=menu-extrato]',
         CONTAS: '[href="/contas"]',
         RESET: '[href="/reset"]',
         LOGOUT: '[href="/logout"]',
