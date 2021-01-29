@@ -17,11 +17,20 @@ describe('Test Sistema de cobrança de aluguel', () => {
     });
 
     it('Should alter an account', () => {
-        cy.xpath(loc.CONTAS.XP).click();
+        cy.xpath(loc.CONTAS.FN_XP_BTN_ALETERAR('Erickson ')).click();
         cy.inserirContas('Martinez')
         cy.get(loc.CONTAS.BTN_SALVAR).click();
         cy.alert(loc.MESSAGE, 'Conta atualizada com sucesso');
-        cy.logoutSytem();
+    });
+
+    it('Should not create an account with same name', ()=>{
+        cy.AcessarMenuContas();
+        /* tentar fazer dinamicamente Pegar o nome na conta
+        cy.xpath('//table//tr//td[not(contains(., "Conta")) and not(contains(., " | "))]/text()')
+        */
+       cy.inserirContas('Erickson Martinez')
+       cy.alert(loc.MESSAGE, 'code 400')
+        //cy.logoutSytem();
     });
 
 });
