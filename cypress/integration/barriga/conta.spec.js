@@ -17,7 +17,7 @@ describe('Test Sistema de cobrança de aluguel', () => {
     });
 
     it('Should alter an account', () => {
-        cy.xpath(loc.CONTAS.FN_XP_BTN_ALETERAR('Erickson ')).click();
+        cy.xpath(loc.CONTAS.FN_XP_BTN_ALETERAR('Conta mesmo nome')).click();
         cy.inserirContas('Martinez')
         cy.get(loc.CONTAS.BTN_SALVAR).click();
         cy.alert(loc.MESSAGE, 'Conta atualizada com sucesso');
