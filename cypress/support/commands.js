@@ -24,10 +24,36 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+import loc from './locator';
+
 Cypress.Commands.add('clickAlert', (locator, message) => {
     cy.get(locator).click();
     cy.on('window:alert', msg =>{
         console.log(msg);
         expect(msg).to.be.equal(message)
-    })
+    });
+});
+
+Cypress.Commands.add('barrigaLogin', (login, senha)=>{
+    cy.get(loc.LOGIN.USER).type(login);
+    cy.get(loc.LOGIN.SENHA).type(senha);
+    cy.get(loc.LOGIN.BTN_LOGIN).click();
+    cy.alert(loc.MESSAGE, 'Bem vindo, ');
+});
+
+Cypress.Commands.add('alert', (locator, message) =>{
+    cy.get(locator).should('contain',message);
 })
+
+Cypress.Commands.add('contasReset', () =>{
+    cy.get(loc.MENU.SETINGS).click();
+    cy.get(loc.MENU.RESET).click();
+    cy.alert(loc.MESSAGE, 'Dados resetados com sucesso')
+})
+
+Cypress.Commands.add('logoutSytem', () =>{
+    cy.wait(5000);
+    cy.get(loc.MENU.SETINGS).click();
+    cy.get(loc.MENU.LOGOUT).click();
+    cy.alert(loc.MESSAGE, 'Até Logo!');
+});
