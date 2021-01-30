@@ -29,14 +29,8 @@ describe('Test Sistema de cobrança de aluguel', () => {
     });
 
     it('Should alter an account API rest',() => {
-        cy.action('GET', 'contas', token)
-            .as('response');
-        cy.get('@response').then(res=>{
-            expect(res.status).to.be.equal(200);
-            let index = (rand < res.body.length ) ? rand : 0;
-            return res.body[index].id;
-        }).then(idConta =>{
-            cy.action('PUT', `contas/${idConta}`, token, {nome: `Alteradar conta ${idConta}`}).then(res=>{
+        cy.getConta(token).then(idConta => {
+            cy.action('PUT', `contas/${idConta}`, token, {nome: `Alteradar conta ${idConta}`}).then(res => {
                 expect(res.status).to.be.equal(200);
             })
         });
@@ -52,6 +46,35 @@ describe('Test Sistema de cobrança de aluguel', () => {
             false
             ).then( res => {
                 expect(res.status).be.equal(400)
-            })
+            });
+    });
+
+    it('Should extrato transaction',() => {
+        cy.action('GET', 'extrato/202101', token,'', 'orderBy: data_pagamento').then(res => {console.log(res.body)
+        expect(res.status).to.be.equal(200);
+        })
+    });
+
+    it('Create a transaction',() => {
+        cy.getConta(token).then( id => {
+            cy.action(
+                'POST',
+                'transacoes',
+                token,
+                {
+                    conta_id: id,
+                    data_pagamento: Cypress.moment().add({days: 1}).format('DD/MM/YYYY'),
+                    data_transacao: Cypress.moment().format('DD/MM/YYYY'),
+                    descricao: "Erickson movimentação",
+                    envolvido: "Erickson",
+                    status: true,
+                    tipo: "REC",
+                    valor: "10000.00",
+                }
+            ).as('response');
+
+            cy.get('@response').its('status').should('be.equal', 201);
+            cy.get('@response').its('body.id').should('exist');
+        })
     })
 });

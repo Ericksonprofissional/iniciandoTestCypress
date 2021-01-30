@@ -26,6 +26,9 @@
 
 import loc from './locator';
 
+const rand = Cypress._.random(1, 1e1);
+   
+
 Cypress.Commands.add('clickAlert', (locator, message) => {
     cy.get(locator).click();
     cy.on('window:alert', msg => {
@@ -70,12 +73,22 @@ Cypress.Commands.add('action', (metodo, rota, token, corpy, query, faosc) => {
     });
 });
 
+Cypress.Commands.add('getConta', (token, query) => {
+    cy.action('GET', 'contas', token, query)
+        .as('response');
+    cy.get('@response').then(res=>{
+        expect(res.status).to.be.equal(200);
+        let index = (rand < res.body.length ) ? rand : 0;
+        return res.body[index].id;
+    });
+});
+
 Cypress.Commands.add('getToken', (email, senha) => {
     cy.action(
         'POST',
         'signin',
         '',
-        { email: email, redirecionar: false, senha: senha}
+        {email: email, redirecionar: false, senha: senha}
     
     ).its('body.token').should('not.be.empty')
         .then(token => token);
