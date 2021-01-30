@@ -1,38 +1,29 @@
 /// <reference types="cypress" />
 
 describe('Test Sistema de cobrança de aluguel', () => {
+    let token
     before(() => {
-        //cy.barrigaLogin('ericksonprofissional@gmail.com', 'teste@1010');
+        cy.getToken("ericksonprofissional@gmail.com", "teste@1010")
+            .then(tkn => token = tkn)
     });
     beforeEach(() => {
         //cy.contasReset();
     });
 
-    it('Should login',() => {
-        cy.request({
-            method: 'POST',
-            url: 'https://barrigarest.wcaquino.me/signin',
-            body: {
-                email: "ericksonprofissional@gmail.com",
-                redirecionar: false,
-                senha: "teste@1010",
-            }
-        }).its('body.token').should('not.be.empty')
-            .then(token =>{
-                cy.request({
-                    method: 'POST',
-                    url: 'https://barrigarest.wcaquino.me/contas',
-                    headers: { Authorization: `JWT ${token}`},
-                    body: {
-                        nome: 'Erickson API REST1'
-                    }
-                }).as('response');
-            })
+    it('Should reset API REST',() => {
+        cy.action('GET', 'reset', token, )
+    });
+
+    it('Should create an account API rest',() => {
+        cy.action('POST', 'contas', token, {nome: 'Erickson API REST3'})
+            .as('response');
 
             cy.get('@response').then(res=>{
                 expect(res.status).to.be.equal(201)
                 expect(res.body).to.have.property('id')
-                expect(res.body).to.have.property('nome', 'Erickson API REST1')
+                expect(res.body).to.have.property('nome', 'Erickson API REST3')
             })
     });
+
+    
 });
