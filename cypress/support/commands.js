@@ -59,6 +59,7 @@ Cypress.Commands.add('logoutSytem', () => {
 });
 
 Cypress.Commands.add('action', (metodo, rota, token, corpy) => {
+    console.log(rota)
     cy.request({
         method: `${metodo}`,
         url: `https://barrigarest.wcaquino.me/${rota}`,
@@ -68,10 +69,8 @@ Cypress.Commands.add('action', (metodo, rota, token, corpy) => {
 });
 
 Cypress.Commands.add('getToken', (email, senha) => {
-    cy.action('POST', 'signin', '', {
-        email: email,
-        redirecionar: false,
-        senha: senha,
-    }).its('body.token').should('not.be.empty')
+    cy.action('POST', 'signin', '', { email: email, redirecionar: false, senha: senha, }
+    
+    ).its('body.token').should('not.be.empty')
         .then(token => token);
 });

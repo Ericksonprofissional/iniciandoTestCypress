@@ -6,6 +6,6 @@ Cypress.Commands.add('AcessarMenuContas',()=>{
 })
 
 Cypress.Commands.add('inserirContas', (nome)=>{
-    cy.get(loc.CONTAS.NOME).type(`${nome} `);
+    cy.get(loc.CONTAS.NOME).type(`${nome}`);
     cy.get(loc.CONTAS.BTN_SALVAR).click();
-})
+});
