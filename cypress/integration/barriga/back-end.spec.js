@@ -14,7 +14,7 @@ describe('Test Sistema de cobrança de aluguel', () => {
     });
 
     it('Should reset API REST',() => {
-        cy.action('GET', 'reset', token, )
+        cy.action('GET', 'reset', token)
     });
 
     it('Should create an account API rest',() => {
@@ -29,7 +29,7 @@ describe('Test Sistema de cobrança de aluguel', () => {
     });
 
     it('Should alter an account API rest',() => {
-        cy.action('GET', 'contas', token, '')
+        cy.action('GET', 'contas', token)
             .as('response');
         cy.get('@response').then(res=>{
             expect(res.status).to.be.equal(200);
@@ -41,4 +41,17 @@ describe('Test Sistema de cobrança de aluguel', () => {
             })
         });
     });
+
+    it('Should alter an account API REST same name',()=>{
+        cy.action(
+            'PUT',
+            `contas/${idConta}`,
+            token,
+            {nome: `Conta mesmo nome`},
+            '',
+            false
+            ).then( res => {
+                expect(res.status).be.equal(400)
+            })
+    })
 });

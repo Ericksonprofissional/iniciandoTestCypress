@@ -58,18 +58,24 @@ Cypress.Commands.add('logoutSytem', () => {
     cy.alert(loc.MESSAGE, 'Até Logo!');
 });
 
-Cypress.Commands.add('action', (metodo, rota, token, corpy) => {
+Cypress.Commands.add('action', (metodo, rota, token, corpy, query, faosc) => {
     console.log(rota)
     cy.request({
         method: `${metodo}`,
         url: `https://barrigarest.wcaquino.me/${rota}`,
         headers: { Authorization: `JWT ${token}`},
-        body: corpy
+        body: corpy,
+        qs: query,
+        failOnStatusCode: faosc
     });
 });
 
 Cypress.Commands.add('getToken', (email, senha) => {
-    cy.action('POST', 'signin', '', { email: email, redirecionar: false, senha: senha, }
+    cy.action(
+        'POST',
+        'signin',
+        '',
+        { email: email, redirecionar: false, senha: senha}
     
     ).its('body.token').should('not.be.empty')
         .then(token => token);
