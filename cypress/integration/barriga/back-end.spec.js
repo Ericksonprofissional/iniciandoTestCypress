@@ -141,4 +141,63 @@ describe('Test Sistema de cobrança de aluguel', () => {
         });
     });
 
+    it('Create a transaction',() => {
+        cy.getConta(token).then( id => {
+            cy.action(
+                'POST',
+                'transacoes',
+                token,
+                {
+                    conta_id: id,
+                    data_pagamento: Cypress.moment().add({days: 1}).format('DD/MM/YYYY'),
+                    data_transacao: Cypress.moment().format('DD/MM/YYYY'),
+                    descricao: "Erickson movimentação",
+                    envolvido: "Erickson",
+                    status: true,
+                    tipo: "REC",
+                    valor: "10000.00",
+                }
+            ).as('response');
+
+            cy.get('@response').its('status').should('be.equal', 201);
+            cy.get('@response').its('body.id').should('exist');
+        });
+    });
+
+    it('Should DELETE transaction', () => {
+        cy.action(
+            'GET',
+            'saldo',
+            token
+        ).then(res => {
+            let saldoConta = null;
+            res.body.forEach(c => {
+                if(c.conta === 'Conta para movimentacoes')
+                    saldoConta = c.saldo;               
+            });
+            expect(saldoConta).to.be.equal('-1500.00')
+        });
+        
+        cy.action(
+            'GET',
+            'transacoes',
+            token,
+        ).then(res => {
+            let movimentacao = null
+            res.body.forEach( mov => {
+                if(mov.descricao == 'Movimentacao para exclusao'){
+                    movimentacao = mov.id;
+                }
+            });
+            return movimentacao
+        }).then( mov=> {
+            cy.action(
+                    'DELETE',
+                    `transacoes/${mov}`,
+                    token,
+                ).as('response');    
+                cy.get('@response').its('status').should('be.equal', 204);
+            });        
+    });
+
 });
