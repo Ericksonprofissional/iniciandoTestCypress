@@ -50,7 +50,7 @@ describe('Test Sistema de cobrança de aluguel', () => {
     });
 
     it('Should extrato transaction',() => {
-        cy.action('GET', 'extrato/202101', token,'', 'orderBy: data_pagamento').then(res => {console.log(res.body)
+        cy.action('GET', 'extrato/202101', token,'', 'orderBy: data_pagamento').then(res => {
         expect(res.status).to.be.equal(200);
         })
     });
@@ -75,6 +75,70 @@ describe('Test Sistema de cobrança de aluguel', () => {
 
             cy.get('@response').its('status').should('be.equal', 201);
             cy.get('@response').its('body.id').should('exist');
-        })
-    })
+        });
+    });
+
+    it('Should get balance', () => {
+        cy.action(
+            'GET',
+            'saldo',
+            token
+        ).then(res => {
+            let saldoConta = null;
+            res.body.forEach(c => {
+                if(c.conta === 'Conta para saldo')
+                    saldoConta = c.saldo;               
+            });
+            expect(saldoConta).to.be.equal('534.00')
+        });
+        
+        cy.action(
+            'GET',
+            'transacoes',
+            token,
+        ).then(res => {
+            let movimentacao = null
+            res.body.forEach( mov => {
+                if(mov.descricao == 'Movimentacao 1, calculo saldo'){
+                    movimentacao = {
+                            id: mov.id,
+                            conta_id: mov.conta_id,
+                            data_pagamento: Cypress.moment().format('DD/MM/YYYY'),
+                            data_transacao: Cypress.moment().format('DD/MM/YYYY'),
+                            descricao: mov.descricao,
+                            envolvido: mov.envolvido,
+                            status: true,
+                            tipo: mov.tipo,
+                            valor: mov.valor,                       
+                    }
+                }
+            });
+            return movimentacao
+        }).then( mov=> {
+            cy.action(
+                    'PUT',
+                    `transacoes/${mov.id}`,
+                    token,
+                    mov
+                ).as('response');    
+                cy.get('@response').its('status').should('be.equal', 200);
+            });
+        
+    });
+
+    it('Should get balance, with alter a transiction', () => {
+        cy.action(
+            'GET',
+            'saldo',
+            token
+        ).then(res => {
+            let saldoConta = null;
+            res.body.forEach(c => {
+                if(c.conta === 'Conta para saldo')
+                    saldoConta = c.saldo;               
+            });
+            expect(saldoConta).to.be.equal('4034.00')
+        });
+    });
+
 });

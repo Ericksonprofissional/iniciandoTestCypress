@@ -32,7 +32,6 @@ const rand = Cypress._.random(1, 1e1);
 Cypress.Commands.add('clickAlert', (locator, message) => {
     cy.get(locator).click();
     cy.on('window:alert', msg => {
-        console.log(msg);
         expect(msg).to.be.equal(message)
     });
 });
@@ -62,7 +61,6 @@ Cypress.Commands.add('logoutSytem', () => {
 });
 
 Cypress.Commands.add('action', (metodo, rota, token, corpy, query, faosc) => {
-    console.log(rota)
     cy.request({
         method: `${metodo}`,
         url: `https://barrigarest.wcaquino.me/${rota}`,
@@ -73,8 +71,8 @@ Cypress.Commands.add('action', (metodo, rota, token, corpy, query, faosc) => {
     });
 });
 
-Cypress.Commands.add('getConta', (token, query) => {
-    cy.action('GET', 'contas', token, query)
+Cypress.Commands.add('getConta', (token) => {
+    cy.action('GET', 'contas', token)
         .as('response');
     cy.get('@response').then(res=>{
         expect(res.status).to.be.equal(200);
