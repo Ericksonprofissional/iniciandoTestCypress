@@ -32,7 +32,6 @@ const rand = Cypress._.random(1, 1e1);
 Cypress.Commands.add('clickAlert', (locator, message) => {
     cy.get(locator).click();
     cy.on('window:alert', msg => {
-        console.log(msg);
         expect(msg).to.be.equal(message)
     });
 });
@@ -61,20 +60,18 @@ Cypress.Commands.add('logoutSytem', () => {
     cy.alert(loc.MESSAGE, 'Até Logo!');
 });
 
-Cypress.Commands.add('action', (metodo, rota, token, corpy, query, faosc) => {
-    console.log(rota)
+Cypress.Commands.add('action', (metodo, rota, corpy, query, faosc) => {
     cy.request({
         method: `${metodo}`,
         url: `https://barrigarest.wcaquino.me/${rota}`,
-        headers: { Authorization: `JWT ${token}`},
         body: corpy,
         qs: query,
         failOnStatusCode: faosc
     });
 });
 
-Cypress.Commands.add('getConta', (token, query) => {
-    cy.action('GET', 'contas', token, query)
+Cypress.Commands.add('getConta', () => {
+    cy.action('GET', 'contas')
         .as('response');
     cy.get('@response').then(res=>{
         expect(res.status).to.be.equal(200);
@@ -91,5 +88,19 @@ Cypress.Commands.add('getToken', (email, senha) => {
         {email: email, redirecionar: false, senha: senha}
     
     ).its('body.token').should('not.be.empty')
-        .then(token => token);
+        .then(token => {
+            Cypress.env('token', token);
+            return token;
+        });
 });
+
+Cypress.Commands.overwrite('request', (originalFn, ...options) => {
+    if(options.length === 1){
+        if(Cypress.env('token')){
+             options[0].headers = {
+                    Authorization: `JWT ${Cypress.env('token')}`
+                }            
+        }
+    }
+    return originalFn(...options);
+})
