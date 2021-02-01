@@ -47,7 +47,7 @@ describe('Test Sistema de cobrança de aluguel', () => {
                 {id: 2, nome:'Poupança', visivel: true, usuario_id: 1}
             ],
             'showAccount'
-            )
+            );
         cy.rotas(
             'POST',
             'contas',
@@ -55,8 +55,10 @@ describe('Test Sistema de cobrança de aluguel', () => {
                 {id: 3, nome:'Corrente', visivel: true, usuario_id: 1}
             ],
             'createAccount'
-            )
+        );
+
         cy.AcessarMenuContas();
+        
         cy.rotas(
             'GET',
             'contas',
@@ -66,19 +68,41 @@ describe('Test Sistema de cobrança de aluguel', () => {
                 {id: 3, nome:'Corrente', visivel: true, usuario_id: 1}
             ],
             'showAccount'
-            )
-        cy.inserirContas('Erickson')
+        );
+        cy.inserirContas('Corrente')
         cy.alert(loc.MESSAGE, 'Conta inserida com sucesso');
     });
 
     it('Should alter an account', () => {
-        cy.xpath(loc.CONTAS.FN_XP_BTN_ALETERAR('Conta mesmo nome')).click();
-        cy.inserirContas('Martinez')
-        cy.get(loc.CONTAS.BTN_SALVAR).click();
+        cy.server();
+        cy.rotas(
+            'PUT',
+            'contas/**',
+            [
+                {id: 1, nome: 'Carteira Alterada', visivel: true, usuario_id: 1}
+            ],
+            'alterAccount'
+        );
+        
+        cy.rotas(
+            'GET',
+            'contas',
+            [
+                {id: 1, nome: 'Carteira', visivel: true, usuario_id: 1},
+                {id: 2, nome:'Poupança', visivel: true, usuario_id: 1},
+                {id: 3, nome:'Corrente', visivel: true, usuario_id: 1}
+            ],
+            'Account'
+        );  
+      
+        cy.xpath(loc.CONTAS.FN_XP_BTN_ALETERAR('Carteira')).click();
+        cy.inserirContas('Carteira Alterada');          
+        cy.get(loc.CONTAS.BTN_SALVAR).click();  
         cy.alert(loc.MESSAGE, 'Conta atualizada com sucesso');
+        
     });
 
-    it('Should not create an account with same name', ()=>{
+    it.skip('Should not create an account with same name', ()=>{
         cy.AcessarMenuContas();
         /* tentar fazer dinamicamente Pegar o nome na conta
         cy.xpath('//table//tr//td[not(contains(., "Conta")) and not(contains(., " | "))]/text()')
