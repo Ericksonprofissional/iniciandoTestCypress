@@ -4,17 +4,21 @@ import loc from '../../support/locator';
 import '../../support/CommandsConta';
 
 describe('Test Sistema de cobrança de aluguel', () => {
+    after(()=>{
+        cy.clearLocalStorage();
+    })
     before(() => {
         cy.server();
-        cy.route({
-            method: 'POST',
-            url: 'signin',
-            response: {
-                id: 1000,
-                nome: 'Usuario falso',                
-                token: 'Uma string muito grande que não deveria ser aceito mas no teste vai'
-            }
-        });
+        cy.rotas(
+            'POST',
+            'signin',
+           {
+               id: 1000,
+               nome: 'Usuario falso',                
+               token: 'Uma string muito grande que não deveria ser aceito mas no teste vai'
+            },
+            'login'
+        );
         cy.route({
             method: 'GET',
             url: 'saldo',
@@ -29,13 +33,40 @@ describe('Test Sistema de cobrança de aluguel', () => {
                 saldo:  '1500.12'
             }
         ]
-        })
+        }).as('saldo');
         cy.barrigaLogin('ericksonprofissional@gmail.com', 'testee@1010');
-        //cy.contasReset();
     });
 
+
     it('Should create an account',() => {
+        cy.rotas(
+            'GET',
+            'contas',
+            [
+                {id: '1', nome: 'Carteira', visivel: true, usuario_id: 1},
+                {id: 2, nome:'Poupança', visivel: true, usuario_id: 1}
+            ],
+            'showAccount'
+            )
+        cy.rotas(
+            'POST',
+            'contas',
+            [
+                {id: 3, nome:'Corrente', visivel: true, usuario_id: 1}
+            ],
+            'createAccount'
+            )
         cy.AcessarMenuContas();
+        cy.rotas(
+            'GET',
+            'contas',
+            [
+                {id: '1', nome: 'Carteira', visivel: true, usuario_id: 1},
+                {id: 2, nome:'Poupança', visivel: true, usuario_id: 1},
+                {id: 3, nome:'Corrente', visivel: true, usuario_id: 1}
+            ],
+            'showAccount'
+            )
         cy.inserirContas('Erickson')
         cy.alert(loc.MESSAGE, 'Conta inserida com sucesso');
     });

@@ -104,4 +104,12 @@ Cypress.Commands.overwrite('request', (originalFn, ...options) => {
         }
     }
     return originalFn(...options);
-})
+});
+
+Cypress.Commands.add('rotas',(metodo, rota, resp, title)=>{
+    cy.route({
+        method: metodo,
+        url: rota,
+        response: resp
+    }).as(`${title}`);
+});
