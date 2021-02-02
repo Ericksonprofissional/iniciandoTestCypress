@@ -110,4 +110,79 @@ describe('Test Sistema de cobrança de aluguel', () => {
         cy.alert(loc.MESSAGE, 'sucesso');
         cy.xpath(loc.EXTRATO.FN_XP_BUSCA_ELEMENTO('Desc', 123)).should('exist');
     });
+
+    it('Should a transaction', ()=>{
+        cy.get(loc.MENU.HOME).click();
+        cy.xpath(loc.SALDO.FN_XP_SALDO_CONTA('Carteira')).should('contain', '10.050,00');
+     });
+ 
+     it('Alter saldo',()=>{
+
+        cy.rotas(
+            'GET',
+            'transacoes/**',
+            {
+                "conta": "Conta para extrato",
+                "id": 363946,
+                "descricao": "Movimentacao 1, calculo saldo",
+                "envolvido": "FFF",
+                "observacao": null,
+                "tipo": "DESP",
+                "data_transacao": "2021-02-01T03:00:00.000Z",
+                "data_pagamento": "2021-02-01T03:00:00.000Z",
+                "valor": "123.00",
+                "status": true,
+                "conta_id": 397994,
+                "usuario_id": 13113,
+                "transferencia_id": null,
+                "parcelamento_id": null
+            }
+        );
+        cy.rotas(
+            'PUT',
+            'transacoes/**',
+            {
+                "conta": "Conta para extrato",
+                "id": 363946,
+                "descricao": "Movimentacao 1, calculo saldo",
+                "envolvido": "FFF",
+                "observacao": null,
+                "tipo": "DESP",
+                "data_transacao": "2021-02-01T03:00:00.000Z",
+                "data_pagamento": "2021-02-01T03:00:00.000Z",
+                "valor": "123.00",
+                "status": true,
+                "conta_id": 397994,
+                "usuario_id": 13113,
+                "transferencia_id": null,
+                "parcelamento_id": null
+            }
+        )
+
+        cy.get(loc.MENU.EXTRATO).click();
+        cy.xpath(loc.EXTRATO.FN_XP_ALTERAR_ELEMENTO('Movimentacao 1, calculo saldo')).click();
+        cy.get(loc.MOVIMENTACAO.DESCRICAO).should('have.value', 'Movimentacao 1, calculo saldo');
+        cy.get(loc.MOVIMENTACAO.STATUS).click();
+        cy.get(loc.MOVIMENTACAO.BTN_SALVAR).click();
+        cy.alert(loc.MESSAGE, 'sucesso');
+        cy.route({
+            method: 'GET',
+            url: 'saldo',
+            response: [{
+                conta_id: 1000,
+                conta: 'Carteira',
+                saldo: '10.20'
+            },
+            {
+                conta_id: 1001,
+                conta: 'Poupança',
+                saldo:  '1500.12'
+            }
+        ]
+        }).as('saldo');
+        cy.get(loc.MENU.HOME).click();
+        cy.xpath(loc.SALDO.FN_XP_SALDO_CONTA('Carteira')).should('contain', '10,20');
+
+    });
+
 });
