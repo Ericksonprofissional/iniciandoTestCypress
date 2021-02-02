@@ -11,7 +11,7 @@ describe('Test Sistema de cobrança de aluguel', () => {
     });
 
     it('Should create an account',() => {
-        cy.AcessarMenuContas();
+        cy.acessarMenuContas();
         cy.inserirContas('Erickson')
         cy.alert(loc.MESSAGE, 'Conta inserida com sucesso');
     });
@@ -24,11 +24,11 @@ describe('Test Sistema de cobrança de aluguel', () => {
     });
 
     it('Should not create an account with same name', ()=>{
-        cy.AcessarMenuContas();
+        cy.acessarMenuContas();
         /* tentar fazer dinamicamente Pegar o nome na conta
         cy.xpath('//table//tr//td[not(contains(., "Conta")) and not(contains(., " | "))]/text()')
         */
-       cy.inserirContas('Erickson Martinez')
+       cy.inserirContas('Conta para extrato')
        cy.alert(loc.MESSAGE, 'code 400')
         //cy.logoutSytem();
     });
