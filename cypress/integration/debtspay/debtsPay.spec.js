@@ -1,7 +1,8 @@
 /// <reference types="cypress" />
 
-const renda = 1000;
+const renda = 3000;
 const dividasTitulos = ['luz', 'agua', 'faculdade', 'carro', 'Financiamento Casa']
+const dividasValor = [150, 50, 550, 550, 900]
 
 describe('Test Sistema organização de dividas', () => {
     before(() => {
@@ -33,10 +34,33 @@ describe('Test Sistema organização de dividas', () => {
         cy.get('#rendaMensal1').contains(renda);
     });
 
-    it('inserindo Descrição Divida',()=>{
+    it('inserindo Divida parcelado',()=>{
+     
+           
+                cy.get('[name=tituloDivida]').type('Wise UP');
+                cy.get('.vdivida').type(900);
+                cy.get('#parceladoSim').check();
+                cy.get('select').select('12 vezes')
+                cy.get('#aVistaSim').check();
+                cy.get('form > button').click();              
+        
+    })
+
+    it('inserindo Divida a vista',()=>{
         cy.wrap(dividasTitulos).then( divida => {
-            cy.get('[name=tituloDivida]').type('divida');
+            divida.forEach( div =>{
+                let id = dividasTitulos.indexOf(div);
+                cy.get('[name=tituloDivida]').type(`${div}`);
+                cy.get('.vdivida').type(dividasValor[id]);
+                cy.get('#parceladoNao').check();
+                cy.get('#aVistaSim').check();
+                cy.get('form > button').click();              
+            })
         })
     })
 
+
+    it('Exportando os dados', () => {
+        cy.get('#exportar')
+    })
 })

@@ -17,7 +17,7 @@ describe('Esperas', ()=>{
         cy.get('#novoCampo').type('Funcioniou;')
     })
 
-    it.only('Deve fazer retrys',()=>{
+    it('Deve fazer retrys',()=>{
         cy.get('#buttonDelay').click();
         cy.get('#novoCampo')
             //.should('not.exist')
@@ -25,7 +25,7 @@ describe('Esperas', ()=>{
             .type('Funcioniou;')
     })
 
-    it.only('Listar', ()=>{
+    it('Listar', ()=>{
         cy.get('#buttonList').click();
         cy.get('#lista li')
             .find('span')
@@ -34,7 +34,7 @@ describe('Esperas', ()=>{
             .should('contain', 'Item 2')
     })
 
-    it.only('Listar', ()=>{
+    it('Listar', ()=>{
         cy.get('#buttonListDOM').click();
         cy.get('#lista li span')
             .should('contain', 'Item 1')
@@ -42,13 +42,13 @@ describe('Esperas', ()=>{
             .should('contain', 'Item 2')
     })
 
-    it.only('Uso do timeOut',()=>{
+    it('Uso do timeOut',()=>{
         cy.get('#buttonDelay').click();
         cy.get('#novoCampo', {timeout: 3000})
             .should('exist')
     })
 
-    it.only('Uso do timeOut',()=>{
+    it('Uso do timeOut',()=>{
         cy.get('#buttonListDOM').click();
         cy.get('#lista  li span')
             .should('have.length', 1);
@@ -56,12 +56,12 @@ describe('Esperas', ()=>{
             .should('have.length', 2);
     })
 
-    it.only('Click retry',()=>{
+    it('Click retry',()=>{
         cy.get('#buttonCount')
             .click()
             .should('have.value', '1')
     })
-    it.only('Click retry',()=>{
+    it('Click retry',()=>{
         cy.get('#buttonListDOM')
         .click();
         cy.get('#lista  li span').should($el =>{

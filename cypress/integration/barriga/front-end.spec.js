@@ -14,7 +14,7 @@ describe('Test Sistema de cobrança de aluguel', () => {
 
     });
 
-    it.only('Should validate data send create an account',() => {
+    it('Should validate data send create an account',() => {
 
         cy.rotas(
             'POST',

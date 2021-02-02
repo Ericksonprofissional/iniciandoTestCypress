@@ -10,3 +10,6 @@ A ferramenta relativamente com muito poder para realizar testes automatizados. T
 2. <em>Testes de backend</em>: Com a mesma ferramenta, realizar teste api rest da aplicação diretamente, entendendo os conceitos deste tipo de API e como utilizar o Cypress para acelerar nossos testes.
 
 3. <em>Testes de frontend</em>: Ainda com o Cypress, testar a camada de apresentação (assim como fizemos nos testes funcionais), mas dessa vez, vamos virtualizar todas as requisições ao backend, conseguindo testes muito mais rápidos e podendo focar exclusivamente na interface gráfica.
+
+executando todos teste
+npm run cypress:run 

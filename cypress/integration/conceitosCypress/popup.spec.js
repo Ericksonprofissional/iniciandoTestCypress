@@ -29,7 +29,7 @@ describe('Work with PopUp', () => {
     })
 });
 
-describe.only('With Links',()=>{
+describe('With Links',()=>{
     beforeEach(()=>{
         cy.visit('http://wcaquino.me/cypress/componentes.html');
     });

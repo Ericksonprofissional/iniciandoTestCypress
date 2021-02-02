@@ -8,7 +8,7 @@ describe('Work with Alert', () => {
         cy.reload();
     })
 
-    it.only('Alert', ()=>{
+    it('Alert', ()=>{
         cy.clickAlert('#alert', 'Alert Simples');
     })
 

@@ -22,7 +22,7 @@ describe('Helpers', () => {
             cy.get('#buttonList').then(()=> console.log('Encontrei segundo bottão'))
     })
 
-    it.only('Its..',()=>{
+    it('Its..',()=>{
         const obj = { nome: 'User', idade: 20 }
         cy.wrap(obj).should('have.property', 'nome','User');
         cy.wrap(obj).its('nome').should('be.equal','User');
@@ -33,7 +33,7 @@ describe('Helpers', () => {
             .should('contain','bobo');
     })
 
-    it.only('invoke',()=>{
+    it('invoke',()=>{
         const getValue = () => 1;
         const soma = (a, b) => a + b;
 

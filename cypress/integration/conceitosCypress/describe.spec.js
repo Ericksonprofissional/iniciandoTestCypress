@@ -1,7 +1,7 @@
 /// <reference types="cypress"/>
 
 
-it.only('A external test...', () => {
+it('A external test...', () => {
     //only deixa o teste ativo
 })
 

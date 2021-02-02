@@ -52,7 +52,7 @@ describe('Work with basic elements', () => {
 
     });
 
-    it.only('RadioButton', () => {
+    it('RadioButton', () => {
         cy.get('#formSexoFem')
             .click()
             .should('be.checked');
@@ -63,7 +63,7 @@ describe('Work with basic elements', () => {
         cy.get("[name=formSexo]").should('have.length', 2);
     })
 
-    it.only("checkbox", () => {
+    it("checkbox", () => {
         cy.get('#formComidaPizza')
             .click()
             .should('be.checked')
@@ -77,7 +77,7 @@ describe('Work with basic elements', () => {
 
     })
 
-    it.only('ComboBox', () => {
+    it('ComboBox', () => {
         cy.get('[data-test=dataEscolaridade]')
             .select('2o grau completo')
             .should('have.value', '2graucomp')
@@ -97,7 +97,7 @@ describe('Work with basic elements', () => {
                 })
     })
 
-    it.only('Combo multiplo', ()=>{
+    it('Combo multiplo', ()=>{
         cy.get('[data-testid=dataEsportes]')
             .select(['natacao', 'Corrida', 'nada']);
 
