@@ -1,6 +1,6 @@
 import loc from './locator';
 
-Cypress.Commands.add('AcessarMenuContas',()=>{
+Cypress.Commands.add('acessarMenuContas',()=>{
     cy.get(loc.MENU.SETINGS).click();
     cy.get(loc.MENU.CONTAS).click();
 })

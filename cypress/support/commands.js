@@ -37,6 +37,7 @@ Cypress.Commands.add('clickAlert', (locator, message) => {
 });
 
 Cypress.Commands.add('barrigaLogin', (login, senha) => {
+    cy.visit('http://barrigareact.wcaquino.me/');
     cy.get(loc.LOGIN.USER).type(login);
     cy.get(loc.LOGIN.SENHA).type(senha);
     cy.get(loc.LOGIN.BTN_LOGIN).click();
@@ -103,4 +104,13 @@ Cypress.Commands.overwrite('request', (originalFn, ...options) => {
         }
     }
     return originalFn(...options);
-})
+});
+
+Cypress.Commands.add('rotas',(metodo, rota, resp, title, code)=>{
+    cy.route({
+        method: metodo,
+        url: rota,
+        response: resp,
+        status: code
+    }).as(`${title}`);
+});
