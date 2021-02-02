@@ -185,4 +185,18 @@ describe('Test Sistema de cobrança de aluguel', () => {
 
     });
 
+    it('Remove a transaction', () => {
+
+        cy.rotas(
+            'DELETE',
+            'transacoes/**',
+            {},
+            'Del',
+            204
+        )
+        cy.get(loc.MENU.EXTRATO).click();
+        cy.xpath(loc.EXTRATO.FN_XP_EXCLUIR_ELEMENTO('Movimentacao para exclusao')).click();
+        cy.alert(loc.MESSAGE,'sucesso');
+    });
+
 });
