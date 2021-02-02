@@ -14,7 +14,7 @@ describe('Test Sistema de cobrança de aluguel', () => {
 
     });
 
-    it('Should create an account',() => {
+    it.only('Should validate data send create an account',() => {
 
         cy.rotas(
             'POST',
@@ -37,7 +37,8 @@ describe('Test Sistema de cobrança de aluguel', () => {
             ],
             'showAccount'
         );
-        cy.inserirContas('Corrente')
+        cy.inserirContas('Corrente');
+        cy.wait('@createAccount').its('request.body.nome').should('not.be.empty');
         cy.alert(loc.MESSAGE, 'Conta inserida com sucesso');
     });
 
@@ -111,12 +112,12 @@ describe('Test Sistema de cobrança de aluguel', () => {
         cy.xpath(loc.EXTRATO.FN_XP_BUSCA_ELEMENTO('Desc', 123)).should('exist');
     });
 
-    it('Should a transaction', ()=>{
+    it('Should a transaction', () => {
         cy.get(loc.MENU.HOME).click();
         cy.xpath(loc.SALDO.FN_XP_SALDO_CONTA('Carteira')).should('contain', '10.050,00');
      });
  
-     it('Alter saldo',()=>{
+     it('Alter saldo',() => {
 
         cy.rotas(
             'GET',
@@ -198,5 +199,4 @@ describe('Test Sistema de cobrança de aluguel', () => {
         cy.xpath(loc.EXTRATO.FN_XP_EXCLUIR_ELEMENTO('Movimentacao para exclusao')).click();
         cy.alert(loc.MESSAGE,'sucesso');
     });
-
 });
